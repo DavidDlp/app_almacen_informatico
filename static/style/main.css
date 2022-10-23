@@ -1,0 +1,58 @@
+/* Footer Style */
+footer{
+    width: 100%;
+    padding: 10px 0px;
+    background: black;
+    color: white
+}
+
+.container__footer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.box__footer{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.box__footer .logo img{
+    width: 70px;
+}
+
+.box__footer .terms{
+    max-width: 300px;
+    margin-top: 20px;
+    font-weight: 400;
+    color: #7a7a7a;
+    font-size: 12px;
+}
+
+.box__footer h5{
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.box__footer a{
+    margin-top: 10px;
+    color: #7a7a7a;
+    font-weight: 400;
+    font-size: small;
+    text-align: center;
+}
+
+.box__footer a:link, a:visited, a:active {
+    text-decoration:none;
+}
+
+.box__copy{
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    padding: 0px 20px;
+    color: #7a7a7a;
+}
