@@ -7,8 +7,24 @@ from models.roles import Role
 # Inicio servidor Flask
 app = Flask(__name__)
 
-
 @app.route('/')
+def index():
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        print(request.form['username'])
+        print(request.form['password'])
+        return render_template("login.html")
+    else:
+        return render_template("login.html")
+
+@app.route('/register')
+def register():
+    return render_template("register.html")
+
+@app.route('/home')
 def home():
     all_products = db.session.query(Product).all()
     return render_template("index.html", all_products=all_products)
