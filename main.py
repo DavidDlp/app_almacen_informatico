@@ -1,12 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for
-import db
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import login_user
+
+# DataBase
+from db import Base, engine, session
+# Models
 from models.products import Product
-from models.users import User
-from models.roles import Role
+from models.users import User, addInitialUser, addAdmin
+from models.roles import addRole
 
 # Inicio servidor Flask
 app = Flask(__name__)
 
+# Routes
 @app.route('/')
 def index():
     return redirect(url_for('login'))
@@ -16,9 +21,7 @@ def login():
     if request.method == 'POST':
         print(request.form['username'])
         print(request.form['password'])
-        return render_template("login.html")
-    else:
-        return render_template("login.html")
+    return render_template("login.html")
 
 @app.route('/register')
 def register():
@@ -26,17 +29,17 @@ def register():
 
 @app.route('/home')
 def home():
-    all_products = db.session.query(Product).all()
+    all_products = session.query(Product).all()
     return render_template("index.html", all_products=all_products)
 
 if __name__ == '__main__':
-    db.Base.metadata.drop_all(bind=db.engine, checkfirst=True)
+    Base.metadata.drop_all(bind=engine, checkfirst=True)
 
-    db.Base.metadata.create_all(db.engine)
+    Base.metadata.create_all(engine)
     Product.addInitialProducts()
-    Role.addRole()
-    User.addAdmin()
-    User.addInitialUser()
+    addRole()
+    addAdmin()
+    addInitialUser()
 
     app.run(debug=True)
 

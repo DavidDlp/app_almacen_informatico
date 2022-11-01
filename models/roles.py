@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from db import Base, session, Relation
-from models.users import User
+
 
 class Role(Base):
     __tablename__ = 'roles'
@@ -15,7 +15,7 @@ class Role(Base):
     def __str__(self):
         return "<Role %r>" %self.name
 
-    def addRole():
+def addRole():
         admin_role = Role(name="Admin")
         user_role = Role(name="User")
         supplier_role = Role(name="Supplier")
