@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Numeric, Boolean
-from db import Base, session
+from db import Base, db_session
 
 class Product(Base):
     __tablename__ = 'products'
@@ -36,6 +36,6 @@ class Product(Base):
         p4 = Product("camara web", "Trush", 30.5, 10, "camara HD 1080P con microfono incorporado", True)
         p5 = Product("iPhone 13", "Apple", 990, 10, "movil de ultima geeneración", True, "../static/image/image-db/smartphone-iphone.png")
         p6 = Product("teclado & raton inalambricos", "Trush", 45.25, 10, "Teclado y raton común inalambricos ", True, "../static/image/image-db/mouse-keyboard.png")
-        session.add_all([p1, p2, p3, p4, p5, p6])
-        session.commit()
-        session.close()
+        db_session.add_all([p1, p2, p3, p4, p5, p6])
+        db_session.commit()
+        db_session.close()

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from db import Base, session, Relation
+from db import Base, db_session, Relation
 
 
 class Role(Base):
@@ -15,10 +15,11 @@ class Role(Base):
     def __str__(self):
         return "<Role %r>" %self.name
 
+# Creamos los roles que se asignaran alos usuarios y/o proveedores
 def addRole():
         admin_role = Role(name="Admin")
         user_role = Role(name="User")
         supplier_role = Role(name="Supplier")
-        session.add_all([admin_role, user_role, supplier_role])
-        session.commit()
-        session.close()
+        db_session.add_all([admin_role, user_role, supplier_role])
+        db_session.commit()
+        db_session.close()
