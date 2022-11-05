@@ -20,10 +20,10 @@ class User(Base, UserMixin):
         self.role_id = role_id
 
     def __repr__(self):
-        return f"User: {self.username} --> {self.name}"
+        return f"User: {self.username} --> {self.name}, {self.role_id}"
 
     def __str__(self):
-        return f"User: {self.username} --> {self.name}"
+        return f"User: {self.username} --> {self.name},  {self.role_id}"
 
 def addAdmin():
     user_admin = User("Administrador",
