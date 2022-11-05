@@ -1,0 +1,19 @@
+{% extends './base.html' %}
+<!--Custom CSS-->
+<!--{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css' )}}">{% endblock %}-->
+{% block title%}Index{% endblock %}
+
+{% block body %}
+<main class="d-flex justify-content-center align-items-center flex-column w-100 min-vh-100 m-auto">
+  <div class="d-flex flex-column">
+      <div class="text-center">
+          <img class="mb-4" src="{{ url_for('static', filename='image/logo.png' )}}" alt="logo" width="100" height="100">
+          <h1 class="h3 mb-3 fw-normal">Choose Login</h1>
+      </div>
+      <a class="btn btn-outline-secondary btn-lg mt-3" href="/login-user">User</a>
+      <span class="m-1">O</span>
+      <a class="btn btn-outline-secondary btn-lg mb-3" href="/login-supplier">Supplier</a>
+  </div>
+    <p class="mt-5 mb-3 text-muted">&copy; David Dlp</p>
+</main>
+{% endblock %}
