@@ -19,6 +19,15 @@
     </nav>
 </header>
 <main style="min-height: 80vh">
+    <h1>Bienvenido,
+        {% if current_user.role_id == 1 %}
+        <span class="badge bg-info">Administrador</span>
+        {% elif current_user.role_id == 3 %}
+        <span class="badge bg-info">Proveedor: {{current_user.business}}</span>
+        {% else %}
+        <span class="badge bg-info">Usuario: {{current_user.name}}</span>
+        {% endif %}
+    </h1>
     <div class="container text-center" >
         <form class="d-flex p-2" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

@@ -2,10 +2,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, EqualTo, Length, ValidationError
 # models
-from .users import User
+from models.users import User
 
 
-class RegisterForm(FlaskForm):
+class RegisterFormUser(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "username"})
 
@@ -15,6 +15,8 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "repita password"})
 
     name = StringField(validators=[InputRequired()], render_kw={"placeholder": "Nombre"})
+
+    # business = StringField(validators=[InputRequired()], render_kw={"placeholder": "Empresa"})
 
     submit = SubmitField("Register")
 
