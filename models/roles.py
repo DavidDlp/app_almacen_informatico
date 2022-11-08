@@ -8,7 +8,6 @@ class Role(Base):
     id_role = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True)
     users = Relation("User", backref="role")
-    suppliers = Relation("Supplier", backref="role")
 
     def __repr__(self):
         return "<Role %r>" %self.name

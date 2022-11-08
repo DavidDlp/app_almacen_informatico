@@ -10,10 +10,7 @@ from forms.forms import RegisterFormUser, LoginForm
 from models.products import Product
 from models.roles import addRole
 # Models user
-from models.users import User, addInitialUser, addAdmin
-# Model supplier
-from models.suppliers import Supplier, addInitialSup
-
+from models.users import User, addInitialUser, addAdmin, addInitialSupplier
 
 
 # Inicio servidor Flask
@@ -30,11 +27,7 @@ login_manager.init_app(app)
 # Routes
 @app.route('/')
 def index():
-    return redirect(url_for('front_page'))
-
-@app.route('/front-page')
-def front_page():
-    return render_template("front-page.html")
+    return redirect(url_for('login'))
 
 @app.route('/home')
 @login_required
@@ -46,7 +39,7 @@ def home():
 @login_manager.user_loader
 def load_user(id):
     id = User.query.get(id)
-    print(id)
+    # print(id)
     return id
 
 @app.route('/login-user', methods=['GET', 'POST'])
@@ -80,31 +73,12 @@ def register():
 
     return render_template("user/register.html", form=form)
 
-# Login Supplier
-@app.route('/login-supplier',  methods=['GET', 'POST'])
-def login_sup():
-    form = LoginForm()
-    if form.validate_on_submit():
-        supplier = Supplier.query.filter_by(username=form.username.data).first()
-        print(supplier)
-        if supplier:
-            if bcrypt.check_password_hash(supplier.password, form.password.data):
-                login_user(supplier)
-                return redirect(url_for('home'))
-            else:
-                flash("Wrong name or password...")
-                return render_template("supplier/login.html", form=form)
-        else:
-            flash("Wrong name or password...")
-            return render_template("supplier/login.html", form=form)
-    return render_template("supplier/login.html", form=form)
-
 # Logout
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('front_page'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     Base.metadata.drop_all(bind=engine, checkfirst=True)
@@ -114,7 +88,7 @@ if __name__ == '__main__':
     addRole()
     addAdmin()
     addInitialUser()
-    addInitialSup()
+    addInitialSupplier()
 
     app.run(debug=True)
 
