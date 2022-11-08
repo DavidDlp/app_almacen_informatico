@@ -23,9 +23,9 @@
         {% if current_user.role_id == 1 %}
         <span class="badge bg-info">Administrador</span>
         {% elif current_user.role_id == 3 %}
-        <span class="badge bg-info">Proveedor: {{current_user.business}}</span>
+        <span class="badge bg-info">Proveedor</span>
         {% else %}
-        <span class="badge bg-info">Usuario: {{current_user.name}}</span>
+        <span class="badge bg-info">Usuario</span>
         {% endif %}
     </h1>
     <div class="container text-center" >

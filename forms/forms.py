@@ -14,10 +14,6 @@ class RegisterFormUser(FlaskForm):
 
     confirm = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "repita password"})
 
-    name = StringField(validators=[InputRequired()], render_kw={"placeholder": "Nombre"})
-
-    # business = StringField(validators=[InputRequired()], render_kw={"placeholder": "Empresa"})
-
     submit = SubmitField("Register")
 
     def validate_username(self, username):
