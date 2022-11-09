@@ -1,7 +1,8 @@
 from flask_login import UserMixin
 # database
 from sqlalchemy import Column, Integer, String, ForeignKey
-from db import Base, db_session
+from db import Base, Relation, db_session
+from models.orders import Order
 
 
 class User(Base, UserMixin):
@@ -11,6 +12,7 @@ class User(Base, UserMixin):
     username = Column(String(20), nullable=False, unique=True, index=True)
     password = Column(String(100), nullable=False)
     role_id = Column(Integer, ForeignKey("roles.id_role"))
+    order = Relation("Order", backref="user")
 
     def __init__(self, username, password, role_id=2):
         self.username = username

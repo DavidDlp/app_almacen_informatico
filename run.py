@@ -5,7 +5,7 @@ from flask_login import login_user, LoginManager, login_required, logout_user
 # DataBase
 from db import Base, engine, db_session
 # Form
-from forms.forms import RegisterFormUser, LoginForm
+from forms.formUsers import RegisterFormUser, LoginForm
 # Models
 from models.products import Product
 from models.roles import addRole
@@ -22,7 +22,7 @@ app.config['SECRET_KEY'] = 'abcdefg1234567'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-# login_manager.login_view = "login"
+login_manager.login_view = "login"
 
 # Routes
 @app.route('/')

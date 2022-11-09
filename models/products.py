@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Numeric, Boolean
-from db import Base, db_session
+from db import Base, db_session, Relation
+from models.orders import Order
 
 class Product(Base):
     __tablename__ = 'products'
@@ -12,6 +13,8 @@ class Product(Base):
     description = Column(String(255), nullable=False)
     stock = Column(Boolean)
     image = Column(String(30))
+    order = Relation("Order", backref="product")
+
 
     def __init__(self, product_name, mark, price, quantity, description, stock, image="../static/image/image-db/image-default.jpg"):
         self.product_name = product_name
