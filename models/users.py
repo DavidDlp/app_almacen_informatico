@@ -14,7 +14,7 @@ class User(Base, UserMixin):
     role_id = Column(Integer, ForeignKey("roles.id_role"))
     order = Relation("Order", backref="user")
 
-    def __init__(self, username, password, role_id=2):
+    def __init__(self, username, password, role_id):
         self.username = username
         self.password = password
         self.role_id = role_id
@@ -36,7 +36,7 @@ def addAdmin():
 
 def addInitialUser():
     user_test = User("Cliente",
-                     "$2b$12$6Soo91Akh3WY/bcbj8iG/O0nxviDVnFmHoo5rXewd7drKZoihm.Re")
+                     "$2b$12$6Soo91Akh3WY/bcbj8iG/O0nxviDVnFmHoo5rXewd7drKZoihm.Re", 2)
     db_session.add(user_test)
     db_session.commit()
     db_session.close()
