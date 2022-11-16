@@ -35,7 +35,7 @@ def home():
     all_products = db_session.query(Product).all()
     return render_template("home.html", all_products=all_products)
 
-# Login User
+# Login
 @login_manager.user_loader
 def load_user(id):
     id = User.query.get(id)
@@ -47,7 +47,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        print(user)
+        # print(user)
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
@@ -60,12 +60,24 @@ def login():
             return render_template("user/login.html", form=form)
     return render_template("user/login.html", form=form)
 
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+# Register User
 @app.route('/register-user', methods=['GET', 'POST'])
 def register():
     form = RegisterFormUser()
     if form.validate_on_submit():
+        if form.typeOfUser.data == "Supplier":
+            role = 3
+        else:
+            role = 2
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
+        new_user = User(username=form.username.data, password=hashed_password, role_id=role)
+        print(form.typeOfUser.data)
         db_session.add(new_user)
         db_session.commit()
         db_session.close()
@@ -73,12 +85,18 @@ def register():
 
     return render_template("user/register.html", form=form)
 
-# Logout
-@app.route('/logout', methods=['GET', 'POST'])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
+# Register Supplier
+@app.route('/register-supplier', methods=['GET', 'POST'])
+def register_supplier():
+    return render_template('user/reg-supplier.html')
+
+# Crud Product
+@app.route('/create-product', methods=['GET', 'POST'])
+def create_new_product():
+    return render_template('product/create-product.html')
+
+
+
 
 if __name__ == '__main__':
     Base.metadata.drop_all(bind=engine, checkfirst=True)

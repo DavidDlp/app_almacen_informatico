@@ -5,16 +5,28 @@
 
 {% block body%}
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img src="../static/image/imagen-perfil.png" alt="perfil" width="50" height="50">
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Info</a>
+                    <a class="dropdown-item" href="#">Graphics</a>
+                    {% if current_user.role_id == 1 %}
+                    <a class="dropdown-item" href="/create-product">Create product</a>
+                    <a class="dropdown-item" href="/register-supplier">Register New supplier</a>
+                    {% elif current_user.role_id == 2 %}
+                    <a class="dropdown-item" href="#">My orders</a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
+                </div>
+            </div>
             <a class="navbar-brand" href="#">
                 <img src="../static/image/logo.png" alt="logo" width="60" height="60">
             </a>
-            <div>
-                <a class="navbar-brand" href="{{url_for('logout')}}">
-                    <img src="../static/image/imagen-perfil.png" alt="perfil" width="50" height="50">
-                </a>
-            </div>
         </div>
     </nav>
 </header>
@@ -28,14 +40,15 @@
         <span class="badge bg-info">Usuario</span>
         {% endif %}
     </h1>
+<!--All Product-->
     <div class="container text-center" >
         <form class="d-flex p-2" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-          </svg>
-      </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
         </form>
         <div class="row ">
             {% for product in all_products: %}
@@ -49,20 +62,30 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{product.product_name}}</h5>
                                     <p class="card-text">{{product.description}}</p>
-                                    <p class="card-text"><small class="text-muted">Stock: {{product.stock}}</small></p>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            {% if product.stock %}
+                                            <span class="badge bg-success">stock</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">stock</span>
+                                            {% endif%}
+                                        </small>
+                                    </p>
+                                    {% if current_user.role_id == 1 %}
+                                    <a class="btn btn-outline-secondary" >Apply for</a>
+                                    {% elif current_user.role_id == 2 %}
+                                    <a class="btn btn-outline-secondary">To Buy</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--<p>Marca: {{product.mark}}</p>
-                <p>Precio: {{product.price}} €</p>
-                <p>Ctd: {{product.quantity}}</p>
-                -->
             {% endfor %}
         </div>
     </div>
 </main>
+<!--Footer-->
 <footer class="min-vh-10">
     <div class="container__footer">
         <div class="box__footer">
@@ -105,3 +128,6 @@
     </div>
 </footer>
 {% endblock%}
+
+
+
