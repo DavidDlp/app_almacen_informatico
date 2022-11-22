@@ -11,6 +11,7 @@ from models.products import Product, addInitialProducts
 from models.roles import addRole
 from models.users import User, addInitialUser, addAdmin, addInitialSupplier
 from models.orders import Order
+from models.applyFor import Apply
 
 
 # Inicio servidor Flask
@@ -95,6 +96,7 @@ def register_supplier():
 def create_new_product():
     return render_template('product/create-product.html')
 
+# Order and Apply For
 @app.route('/create-order/<id>', methods=['GET', 'POST'])
 def create_order(id):
     product_id = id
@@ -110,6 +112,23 @@ def create_order(id):
     print("Cantidad modificada con exito")
     print("Orden de compra CREADA")
     flash("Compra realizada con exito")
+    return redirect(url_for('home'))
+
+@app.route('/create-apply/<id>', methods=['GET', 'POST'])
+def create_apply(id):
+    product_id = id
+    # print(product_id)
+    product = db_session.query(Product).filter(Product.id_product == product_id).first()
+    product.quantity += 1
+    user_id = current_user.id
+    # print(user_id)
+    apply = Apply(product_id, user_id)
+    db_session.add(apply)
+    db_session.commit()
+    db_session.close()
+    print("Cantidad modificada con exito")
+    print("Pedido al proveedor Realizado")
+    flash("Pedido al proveedor realizada con exito")
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
