@@ -13,6 +13,7 @@ class User(Base, UserMixin):
     password = Column(String(100), nullable=False)
     role_id = Column(Integer, ForeignKey("roles.id_role"))
     order = Relation("Order", backref="user")
+    apply = Relation("Apply", backref="user")
 
     def __init__(self, username, password, role_id):
         self.username = username
