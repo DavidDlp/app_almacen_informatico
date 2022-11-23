@@ -6,6 +6,7 @@ from flask_login import login_user, LoginManager, login_required, logout_user, c
 from db import Base, engine, db_session
 # Form
 from forms.formUsers import RegisterFormUser, LoginForm
+from forms.formProducts import RegisterFormProduct
 # Models
 from models.products import Product, addInitialProducts
 from models.roles import addRole
@@ -78,7 +79,7 @@ def register():
             role = 2
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, password=hashed_password, role_id=role)
-        print(form.typeOfUser.data)
+        # print(form.typeOfUser.data)
         db_session.add(new_user)
         db_session.commit()
         db_session.close()
@@ -86,7 +87,7 @@ def register():
 
     return render_template("user/register.html", form=form)
 
-# Register Supplier
+# Register Supplier & Client
 @app.route('/register-supplier', methods=['GET', 'POST'])
 def register_supplier():
     return render_template('user/reg-supplier.html')
@@ -94,7 +95,16 @@ def register_supplier():
 # Crud Product
 @app.route('/create-product', methods=['GET', 'POST'])
 def create_new_product():
-    return render_template('product/create-product.html')
+    form = RegisterFormProduct()
+    if form.validate_on_submit():
+        new_product = Product(product_name=form.product_name.data, mark=form.mark_product.data,
+                              type=form.type_product.data, sale_price=form.sale_price.data,
+                              purchase_price=form.purchase_price.data, description=form.description.data)
+        db_session.add(new_product)
+        db_session.commit()
+        db_session.close()
+        return redirect(url_for('home'))
+    return render_template('product/create-product.html', form=form)
 
 # Order and Apply For
 @app.route('/create-order/<id>', methods=['GET', 'POST'])
@@ -119,7 +129,7 @@ def create_apply(id):
     product_id = id
     # print(product_id)
     product = db_session.query(Product).filter(Product.id_product == product_id).first()
-    product.quantity += 1
+    product.quantity += 10
     user_id = current_user.id
     # print(user_id)
     apply = Apply(product_id, user_id)

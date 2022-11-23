@@ -4,5 +4,42 @@
 {% block title %}Create New Product{% endblock %}
 
 {% block body %}
-<h1>"Create New Product"</h1>
+<main class="form-signin w-100 m-auto">
+    <div class="d-flex">
+        <a href="/home"><img src="{{url_for('static', filename='image/back.svg')}}" width="50" height="50"></a>
+    </div>
+    <form class="form-signin" action="/create-product" method="POST">
+        <img class="mb-4" src="{{url_for('static', filename='image/logo.png')}}" alt="logo" width="100" height="100">
+            <h1 class="h3 mb-3 fw-normal">Create New Product</h1>
+            {{form.hidden_tag()}}
+            <div class="form-floating">
+                {{form.product_name (class="form-control")}}
+                <label>Product Name</label>
+            </div>
+            <div class="form-floating">
+                {{form.mark_product (class="form-control")}}
+                <label>Mark Product</label>
+            </div>
+            <div class="form-floating">
+                {{form.type_product (class="form-control")}}
+                <label>Type Product</label>
+            </div>
+            <div class="form-floating">
+                {{form.sale_price (class="form-control")}}
+                <label>Sale Price</label>
+            </div>
+            <div class="form-floating">
+                {{form.purchase_price (class="form-control")}}
+                <label>Purchase Price</label>
+            </div>
+            <div class="form-floating">
+                {{form.description (class="form-control")}}
+                <label>Description</label>
+            </div>
+            <div class="mt-5">
+                {{form.submit (class="w-100 btn btn-lg btn-primary")}}
+            </div>
+    </form>
+    <p class="mt-5 mb-3 text-muted">&copy; David Dlp</p>
+</main>
 {% endblock %}
