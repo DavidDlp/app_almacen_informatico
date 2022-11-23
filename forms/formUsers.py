@@ -14,7 +14,7 @@ class RegisterFormUser(FlaskForm):
 
     confirm = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "repita password"})
 
-    typeOfUser = SelectField(choices=[ "Client", "Supplier"], validators=[InputRequired()], render_kw={"placeholder": "type of user"})
+    typeOfUser = SelectField(choices=["Client", "Supplier"], validators=[InputRequired()], render_kw={"placeholder": "type of user"})
 
     submit = SubmitField("Register")
 
