@@ -3,6 +3,8 @@ from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, ForeignKey
 from db import Base, Relation, db_session
 from models.orders import Order
+from models.clients import Client
+from models.suppliers import Supplier
 
 
 class User(Base, UserMixin):
@@ -14,6 +16,8 @@ class User(Base, UserMixin):
     role_id = Column(Integer, ForeignKey("roles.id_role"))
     order = Relation("Order", backref="user")
     apply = Relation("Apply", backref="user")
+    client = Relation("Client", backref="user")
+    supplier = Relation("Supplier", backref="user")
 
     def __init__(self, username, password, role_id):
         self.username = username
@@ -34,7 +38,7 @@ def addAdmin():
     db_session.commit()
     db_session.close()
 
-
+# User test
 def addInitialUser():
     user_test = User("Cliente",
                      "$2b$12$6Soo91Akh3WY/bcbj8iG/O0nxviDVnFmHoo5rXewd7drKZoihm.Re", 2)
