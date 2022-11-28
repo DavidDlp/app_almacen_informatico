@@ -15,4 +15,9 @@ class Supplier(Base):
         self.country = country
         self.user_id = user_id
 
+def addProfileInitialSupplier():
+    profile_supplier_test = Supplier("Nisu", "España", 3)
+    db_session.add(profile_supplier_test)
+    db_session.commit()
+    db_session.close()
 

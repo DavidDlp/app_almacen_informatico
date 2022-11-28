@@ -17,7 +17,7 @@ from models.users import User, addInitialUser, addAdmin, addInitialSupplier
 from models.orders import Order
 from models.applyFor import Apply
 from models.clients import Client
-from models.suppliers import Supplier
+from models.suppliers import Supplier, addProfileInitialSupplier
 
 
 # Inicio servidor Flask
@@ -107,13 +107,27 @@ def edit_client():
     form = ModifiedFormClient()
     if form.validate_on_submit():
         user_id = current_user.id
-        new_client = Client(name=form.name.data, lastname=form.lastname.data, address=form.address.data,
-                            country=form.country.data, city=form.city.data,
-                            cp=form.cp.data, phone=form.phone.data, user_id=user_id)
-        db_session.add(new_client)
-        db_session.commit()
-        db_session.close()
-        flash("Perfil guardado correctamente")
+        client = db_session.query(Client).filter(Client.user_id == user_id).first()
+        if client is None:
+            new_client = Client(name=form.name.data, lastname=form.lastname.data, address=form.address.data,
+                                country=form.country.data, city=form.city.data,
+                                cp=form.cp.data, phone=form.phone.data, user_id=user_id)
+            db_session.add(new_client)
+            db_session.commit()
+            db_session.close()
+            flash("Perfil creado correctamente")
+        else:
+            client.name = form.name.data
+            client.lastname = form.lastname.data
+            client.address = form.address.data,
+            client.country = form.country.data
+            client.city = form.city.data,
+            client.cp = form.cp.data
+            client.phone = form.phone.data,
+            db_session.commit()
+            db_session.close()
+            flash("Perfil editado correctamente")
+
         return redirect(url_for('profile_client'))
     return render_template('Client/edit-client.html', form=form)
 
@@ -129,12 +143,22 @@ def edit_supplier():
     form = ModifiedFormSupplier()
     if form.validate_on_submit():
         user_id = current_user.id
-        new_supplier = Supplier(company_name=form.company_name.data, country=form.country.data, user_id=user_id)
-        db_session.add(new_supplier)
-        db_session.commit()
-        db_session.close()
-        flash("Perfil guardado correctamente")
+        supplier = db_session.query(Supplier).filter(Supplier.user_id == user_id).first()
+        if supplier is None:
+            new_supplier = Supplier(company_name=form.company_name.data, country=form.country.data, user_id=user_id)
+            db_session.add(new_supplier)
+            db_session.commit()
+            db_session.close()
+            flash("Perfil creado correctamente")
+        else:
+            supplier.company_name = form.company_name.data
+            country = form.country.data
+            db_session.commit()
+            db_session.close()
+            flash("Perfil editado correctamente")
         return redirect(url_for('profile_supplier'))
+
+
     return render_template('supplier/edit-supplier.html',  form=form)
 
 # Crud Product
@@ -197,6 +221,7 @@ if __name__ == '__main__':
     addAdmin()
     addInitialUser()
     addInitialSupplier()
+    addProfileInitialSupplier()
 
     app.run(debug=True)
 
