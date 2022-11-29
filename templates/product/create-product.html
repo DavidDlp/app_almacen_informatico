@@ -36,6 +36,15 @@
                 {{form.description (class="form-control")}}
                 <label>Description</label>
             </div>
+            <div class="form-floating">
+                {{form.choices (class="form-control")}}
+                <label>Supplier</label>
+                <ul>
+                    {% for error in form.choices.errors %}
+                    <li style="color:red;">{{error}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
             <div class="mt-5">
                 {{form.submit (class="w-100 btn btn-lg btn-primary")}}
             </div>

@@ -134,9 +134,12 @@ def edit_client():
 @app.route('/profile-supplier', methods=['GET', 'POST'])
 def profile_supplier():
     supplier_profile = db_session.query(Supplier).filter(Supplier.user_id == current_user.id).first()
+    supplier_id = supplier_profile.id_supplier
+    # print(supplier_id)
+    my_product = db_session.query(Product).filter(Product.supplier_id == supplier_id).all()
     if not supplier_profile:
         flash("Complete su perfil")
-    return render_template('supplier/profile-supp.html', supplier_profile=supplier_profile)
+    return render_template('supplier/profile-supp.html', supplier_profile=supplier_profile, my_product=my_product)
 
 @app.route('/edit-supplier', methods=['GET', 'POST'])
 def edit_supplier():
@@ -166,9 +169,11 @@ def edit_supplier():
 def create_new_product():
     form = RegisterFormProduct()
     if form.validate_on_submit():
+        # print(form.choices.data.id_supplier)
         new_product = Product(product_name=form.product_name.data, mark=form.mark_product.data,
                               type=form.type_product.data, sale_price=form.sale_price.data,
-                              purchase_price=form.purchase_price.data, description=form.description.data)
+                              purchase_price=form.purchase_price.data,
+                              description=form.description.data, supplier_id=form.choices.data.id_supplier)
         db_session.add(new_product)
         db_session.commit()
         db_session.close()
@@ -213,15 +218,15 @@ def create_apply(id):
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    Base.metadata.drop_all(bind=engine, checkfirst=True)
+    # Base.metadata.drop_all(bind=engine, checkfirst=True)
 
     Base.metadata.create_all(engine)
-    addInitialProducts()
-    addRole()
-    addAdmin()
-    addInitialUser()
-    addInitialSupplier()
-    addProfileInitialSupplier()
+    # addInitialProducts()
+    # addRole()
+    # addAdmin()
+    # addInitialUser()
+    # addInitialSupplier()
+    # addProfileInitialSupplier()
 
     app.run(debug=True)
 
