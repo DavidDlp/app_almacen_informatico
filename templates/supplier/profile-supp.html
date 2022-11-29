@@ -1,0 +1,68 @@
+{% extends './base.html' %}
+<!--Custom CSS-->
+{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css' )}}">{% endblock %}
+{% block title %}Profile Supplier{% endblock %}
+
+{% block body %}
+<!--Profile-->
+<div class="row py-5 px-4">
+    <a class="mb-4 text-start" href="/home"><img src="{{url_for('static', filename='image/back.svg')}}" width="50" height="50"></a>
+    <div class="col-md-5 mx-auto">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-dismissible alert-secondary" role="alert">
+              <strong>{{message}}</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+            </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3">
+                        <img src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                        {% if current_user.role_id == 3 %}
+                        <a href="/edit-supplier" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                        {% endif %}
+                    </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0 text-warning">{{supplier_profile.company_name}}</h4>
+                        <p class="small mb-4"><i class="fas fa-map-marker-alt mr-2"></i>{{supplier_profile.country}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class=" mt-5 px-4 py-3">
+                <h5 class="mb-0">Profile</h5>
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <p class="font-italic mb-0">Web Developer</p>
+                    <p class="font-italic mb-0">Lives in New York</p>
+                    <p class="font-italic mb-0">Photographer</p>
+                </div>
+            </div>
+            <div class="py-4 px-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="mb-0">Mis Productos</h5>
+                </div>
+                <div class="row">
+                    {% for product in my_product: %}
+                    <div class="col-lg-6 mb-2 pr-lg-1">
+                        <div class="card text-center" style="width: 18rem;">
+                            <div>
+                                <img src={{product.image}} class="img-fluid p-1 rounded-start" width="100" height="100" alt="...">
+                            </div>
+                            <div class="card-body ">
+                                <h5 class="card-title">{{product.product_name}}</h5>
+                                <p class="card-text">{{product.purchase_price}}€</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

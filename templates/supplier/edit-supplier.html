@@ -1,0 +1,36 @@
+{% extends './base.html' %}
+<!--Custom CSS-->
+{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css' )}}">{% endblock %}
+{% block title %}Edit Supplier{% endblock %}
+
+{% block body %}
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="w-100 text-start">
+        <a class="mb-4 text-start" href="/profile-supplier"><img src="{{url_for('static', filename='image/back.svg')}}" width="50" height="50"></a>
+    </div>
+    <h1 class="h3 mt-2 mb-2 fw-normal">Profile Settings</h1>
+    <form class="row " action="/edit-supplier" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-5">
+                    {{form.hidden_tag()}}
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="labels">Company Name</label>
+                            {{form.company_name (class="form-control")}}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="labels">Country</label>
+                            {{form.country (class="form-control")}}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                    <div class="mt-5 text-center">
+                        {{form.submit (class="btn btn-primary profile-button")}}
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

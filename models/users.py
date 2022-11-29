@@ -1,7 +1,10 @@
 from flask_login import UserMixin
 # database
 from sqlalchemy import Column, Integer, String, ForeignKey
-from db import Base, db_session
+from db import Base, Relation, db_session
+from models.orders import Order
+from models.clients import Client
+from models.suppliers import Supplier
 
 
 class User(Base, UserMixin):
@@ -11,8 +14,12 @@ class User(Base, UserMixin):
     username = Column(String(20), nullable=False, unique=True, index=True)
     password = Column(String(100), nullable=False)
     role_id = Column(Integer, ForeignKey("roles.id_role"))
+    order = Relation("Order", backref="user")
+    apply = Relation("Apply", backref="user")
+    client = Relation("Client", backref="user")
+    supplier = Relation("Supplier", backref="user")
 
-    def __init__(self, username, password, role_id=2):
+    def __init__(self, username, password, role_id):
         self.username = username
         self.password = password
         self.role_id = role_id
@@ -31,10 +38,10 @@ def addAdmin():
     db_session.commit()
     db_session.close()
 
-
+# User test
 def addInitialUser():
     user_test = User("Cliente",
-                     "$2b$12$6Soo91Akh3WY/bcbj8iG/O0nxviDVnFmHoo5rXewd7drKZoihm.Re")
+                     "$2b$12$6Soo91Akh3WY/bcbj8iG/O0nxviDVnFmHoo5rXewd7drKZoihm.Re", 2)
     db_session.add(user_test)
     db_session.commit()
     db_session.close()

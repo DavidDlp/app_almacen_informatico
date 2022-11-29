@@ -1,0 +1,55 @@
+{% extends './base.html' %}
+<!--Custom CSS-->
+{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css' )}}">{% endblock %}
+{% block title %}Edit Client{% endblock %}
+
+{% block body %}
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="w-100 text-start">
+        <a class="mb-4 " href="/profile-client"><img src="{{url_for('static', filename='image/back.svg')}}" width="50" height="50"></a>
+    </div>
+    <h1 class="h3 mt-2 mb-2 fw-normal">Profile Settings</h1>
+    <form class="row " action="/edit-client" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-5">
+                    {{form.hidden_tag() }}
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">Name</label>
+                            {{form.name (class="form-control")}}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Last Name</label>
+                            {{form.lastname (class="form-control")}}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Address</label>
+                            {{form.address (class="form-control")}}
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Country</label>
+                            {{form.country (class="form-control")}}
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">City</label>
+                            {{form.city (class="form-control")}}
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Postal Code</label>
+                            {{form.cp (class="form-control")}}
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Mobile Number</label>
+                            {{form.phone (class="form-control")}}
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        {{form.submit (class="btn btn-primary profile-button")}}
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

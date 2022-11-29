@@ -14,17 +14,21 @@
             {{form.hidden_tag() }}
             <div class="form-floating">
                 {{form.username (class="form-control")}}
-                <label for="floatingInput">Username</label>
+                <label>Username</label>
             </div>
             <div class="form-floating">
                 {{form.password (class="form-control")}}
-                <label for="floatingPassword">Password</label>
+                <label>Password</label>
             </div>
             <div class="form-floating">
                 {{form.confirm (class="form-control")}}
-                <label for="floatingPassword">Repeat Password</label>
+                <label>Repeat Password</label>
             </div>
-            <div class="mt-2">
+            <div class="form-floating">
+                {{form.typeOfUser (class="form-control")}}
+                <label>Type of User</label>
+            </div>
+            <div class="mt-5">
                 {{form.submit (class="w-100 btn btn-lg btn-primary")}}
             </div>
 
