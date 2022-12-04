@@ -7,6 +7,7 @@ class Supplier(Base):
     id_supplier = Column(Integer, primary_key=True)
     company_name = Column(String(50))
     country = Column(String(20))
+    discount = Column(Integer(), default=20)
     user_id = Column(Integer, ForeignKey("users.id"))
     product = Relation("Product", backref="supplier")
 

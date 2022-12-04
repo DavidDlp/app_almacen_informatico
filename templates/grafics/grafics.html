@@ -1,0 +1,29 @@
+{% extends './base.html' %}
+<!--Custom CSS-->
+{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/grafics.css' )}}">{% endblock %}
+{% block title %}Grafics{% endblock %}
+
+{% block body %}
+<div class="w-100 d-flex flex-column">
+    <a class="mb-4 text-start" href="/home"><img src="{{url_for('static', filename='image/back.svg')}}" width="50" height="50"></a>
+  <div>
+    {% if current_user.role_id == 2 %}
+    <h1>Productos Mas Comprados</h1>
+    {% else %}
+    <h1>Pedidos realizados</h1>
+    {% endif%}
+  </div>
+
+</div>
+{% for product in dates.index %}
+<div class="list-group list-group-radio d-grid gap-2 border-0 w-auto">
+  <div class="position-relative">
+    <div class="list-group-item py-3 pe-5">
+      <strong class="fw-semibold">{{dates["Product_Name"][product]}}</strong>
+      <span class="d-block small opacity-75">Comprado: {{dates["Quantity"][product]}}</span>
+    </div>
+  </div>
+  {% endfor%}
+</div>
+
+{% endblock %}
