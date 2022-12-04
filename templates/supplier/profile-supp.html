@@ -35,11 +35,12 @@
                 </div>
             </div>
             <div class=" mt-5 px-4 py-3">
-                <h5 class="mb-0">Profile</h5>
+                <h5 class="mb-0">Facturación</h5>
                 <div class="p-4 rounded shadow-sm bg-light">
-                    <p class="font-italic mb-0">Web Developer</p>
-                    <p class="font-italic mb-0">Lives in New York</p>
-                    <p class="font-italic mb-0">Photographer</p>
+                    <p class="font-italic mb-0">Pedidos totales: {{number_apply}}</p>
+                    <p class="font-italic mb-0">Total: {{total_amount}}€</p>
+                    <p class="font-italic mb-0">Descuento: {{supplier_profile.discount}}%</p>
+                    <p class="font-italic mb-0">Facturado: {{total_amount * discount}}€</p>
                 </div>
             </div>
             <div class="py-4 px-4">
