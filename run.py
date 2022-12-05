@@ -120,7 +120,7 @@ def control_panel():
             product = db_session.query(Product).filter(Product.id_product == item.product_id).first()
             purchase_price = product.purchase_price
             total_amount += purchase_price * 10
-            bills = float(total_amount) * 0.8
+            bills = float(total_amount) * float(0.8)
 
     for order in my_sales:
         for item in order:
@@ -133,6 +133,7 @@ def control_panel():
 
     return render_template("user/control_panel.html",  all_supplier=all_supplier,
                            bills=bills,
+                           total_amount=total_amount,
                            total_sales=total_sales,
                            invoiced=invoiced)
 
@@ -202,7 +203,7 @@ def profile_supplier():
                 # Tengo problemas en esta parte revisar.
                 purchase_price = product.purchase_price
                 total_amount += purchase_price * 10
-                billing = float(total_amount) * 0.8
+                invoiced = float(total_amount) * float(0.8)
         # print(all_apply)
         number_apply = len(all_apply)
         # if not supplier_profile:
@@ -211,8 +212,8 @@ def profile_supplier():
                         supplier_profile=supplier_profile,
                         my_product=my_product,
                         all_apply=all_apply, number_apply=number_apply,
-                        total_amount=total_amount,
-                        billing=billing)
+                        invoiced=invoiced,
+                        total_amount=total_amount)
 
 @app.route('/edit-supplier', methods=['GET', 'POST'])
 def edit_supplier():
