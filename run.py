@@ -2,7 +2,7 @@ import datetime
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
-
+from decimal import Decimal
 # DataBase
 from db import Base, engine, db_session
 # Form
@@ -18,7 +18,8 @@ from models.orders import Order
 from models.applyFor import Apply
 from models.clients import Client
 from models.suppliers import Supplier, addProfileInitialSupplier
-
+# Servicies
+from servicies.grafics import getProductMoreBuy, getProductMoreApplyFor
 
 # Inicio servidor Flask
 app = Flask(__name__)
@@ -92,7 +93,50 @@ def register():
 
     return render_template("user/register.html", form=form)
 
-# Profile Supplier & Client
+# Control Panel Admin
+@app.route('/control-panel', methods=['GET', 'POST'])
+def control_panel():
+    #Todos los proveedores
+    all_supplier = db_session.query(Supplier).all()
+
+    #Todos mis productos
+    my_product = db_session.query(Product).all()
+
+    #Facturacion
+    my_apply = []
+    my_sales = []
+    for product in my_product:
+        my_apply.append(db_session.query(Apply).filter(Apply.product_id == product.id_product).all())
+        my_sales.append(db_session.query(Order).filter(Order.product_id == product.id_product).all())
+
+    all_apply = []
+    all_sales = []
+    total_amount = 0
+    total_sales = 0
+
+    for apply in my_apply:
+        for item in apply:
+            all_apply.append(item)
+            product = db_session.query(Product).filter(Product.id_product == item.product_id).first()
+            purchase_price = product.purchase_price
+            total_amount += purchase_price * 10
+            bills = float(total_amount) * 0.8
+
+    for order in my_sales:
+        for item in order:
+            all_sales.append(item)
+            product = db_session.query(Product).filter(Product.id_product == item.product_id).first()
+            sale_price = product.sale_price
+            total_sales += sale_price
+
+    invoiced = float(total_sales) - bills
+
+    return render_template("user/control_panel.html",  all_supplier=all_supplier,
+                           bills=bills,
+                           total_sales=total_sales,
+                           invoiced=invoiced)
+
+# Profile Client
 @app.route('/profile-client', methods=['GET', 'POST'])
 def profile_client():
     client_profile = db_session.query(Client).filter(Client.user_id == current_user.id).first()
@@ -131,15 +175,44 @@ def edit_client():
         return redirect(url_for('profile_client'))
     return render_template('Client/edit-client.html', form=form)
 
+# Profile Supplier
 @app.route('/profile-supplier', methods=['GET', 'POST'])
 def profile_supplier():
     supplier_profile = db_session.query(Supplier).filter(Supplier.user_id == current_user.id).first()
-    supplier_id = supplier_profile.id_supplier
-    # print(supplier_id)
-    my_product = db_session.query(Product).filter(Product.supplier_id == supplier_id).all()
     if not supplier_profile:
-        flash("Complete su perfil")
-    return render_template('supplier/profile-supp.html', supplier_profile=supplier_profile, my_product=my_product)
+        return redirect(url_for('edit_supplier'))
+    else:
+        supplier_id = supplier_profile.id_supplier
+        # print(supplier_id)
+        # Productos del proveedor
+        my_product = db_session.query(Product).filter(Product.supplier_id == supplier_id).all()
+        # Facturacion
+        my_apply = []
+        for product in my_product:
+            # print(product.id_product)
+            my_apply.append(db_session.query(Apply).filter(Apply.product_id == product.id_product).all())
+        all_apply = []
+        total_amount = 0
+        for apply in my_apply:
+            for item in apply:
+                all_apply.append(item)
+                product = db_session.query(Product).filter(Product.id_product == item.product_id).first()
+                supplier = db_session.query(Supplier).filter(Supplier.id_supplier == product.supplier_id).first()
+                # discount_decimal = Decimal(supplier.discount / 100)
+                # Tengo problemas en esta parte revisar.
+                purchase_price = product.purchase_price
+                total_amount += purchase_price * 10
+                billing = float(total_amount) * 0.8
+        # print(all_apply)
+        number_apply = len(all_apply)
+        # if not supplier_profile:
+        #     flash("Complete su perfil")
+        return render_template('supplier/profile-supp.html',
+                        supplier_profile=supplier_profile,
+                        my_product=my_product,
+                        all_apply=all_apply, number_apply=number_apply,
+                        total_amount=total_amount,
+                        billing=billing)
 
 @app.route('/edit-supplier', methods=['GET', 'POST'])
 def edit_supplier():
@@ -216,6 +289,19 @@ def create_apply(id):
     print("Pedido al proveedor Realizado")
     flash("Pedido al proveedor realizada con exito")
     return redirect(url_for('home'))
+
+# Servicies Routes
+@app.route('/grafics')
+def create_grafics():
+    product = []
+    if current_user.role_id == 2:
+        dates = getProductMoreBuy()
+        # for item in dates.index:
+        #     print(dates["Product_Name"][item])
+    else:
+        dates = getProductMoreApplyFor()
+    # print(dates)
+    return render_template("grafics/grafics.html", dates=dates)
 
 if __name__ == '__main__':
     # Base.metadata.drop_all(bind=engine, checkfirst=True)
