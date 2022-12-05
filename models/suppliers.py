@@ -20,7 +20,7 @@ class Supplier(Base):
         return f"Supplier: {self.id_supplier} > {self.company_name}"
 
     def __str__(self):
-        return f"Supplier: {self.id_supplier} > {self.company_name}"
+        return f" {self.id_supplier}: {self.company_name}"
 
 def choice_supplier():
     return Supplier.query
